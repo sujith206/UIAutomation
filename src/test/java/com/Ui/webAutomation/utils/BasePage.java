@@ -4,25 +4,24 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import java.time.Duration;
 
 public class BasePage
 {
 
-    public WebDriver driver;
-    public Wait<WebDriver> wait ;
-    JavascriptExecutor js ;
+    protected WebDriver driver;
+    protected Wait<WebDriver> wait ;
+    protected JavascriptExecutor js ;
+
     public BasePage(){
-        WebDriverManager.chromedriver().setup();
-//        System.setProperty("webdriver.chrome.driver", "C:\\Users\\sujit\\Downloads\\chrome-win64 (1)\\chrome-win64\\chrome.exe");
-        driver = new ChromeDriver();
+        // use WebDriverFactory for thread-safe driver management
+        WebDriverFactory.initDriver();
+        driver = WebDriverFactory.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         js = (JavascriptExecutor) driver;
         driver.manage().window().maximize();
@@ -102,7 +101,8 @@ public class BasePage
 
     public void closeBrowser() {
         if (driver != null) {
-            driver.quit();
+            // use the WebDriverFactory to properly quit and remove the thread-local driver
+            WebDriverFactory.quitDriver();
         }
     }
 }
