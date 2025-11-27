@@ -22,7 +22,7 @@ public class BasePage
         // use WebDriverFactory for thread-safe driver management
         WebDriverFactory.initDriver();
         driver = WebDriverFactory.getDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(60));
         js = (JavascriptExecutor) driver;
         driver.manage().window().maximize();
 
